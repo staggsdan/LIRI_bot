@@ -12,6 +12,7 @@ var movieKey = process.env.OMDB_API_KEY;
 
 
 var userCommand = process.argv[2];
+var userTermEntered = process.argv[3];
 
 // class demonstration of 'switch'
 switch (userCommand) {
@@ -23,7 +24,8 @@ switch (userCommand) {
         console.log("spotify")
         break;
     case "movie-this":
-        console.log("movie")
+        console.log("movie");
+        movieSearch();
         break;
     case "do-what-it-says":
         console.log("whatever")
@@ -35,18 +37,27 @@ switch (userCommand) {
 
 // bandsintown search functionality
 // dev note - be sure to change artistName to an argv input later
-var artistName = "radiohead";
+
 
 function concertSearch() {
-    var queryURL = "https://rest.bandsintown.com/artists/" + artistName + "/events?app_id=" + bandsKey;
+    var userTerm = userTermEntered.replace(/\s/g, "+");
+    var queryURL = "https://rest.bandsintown.com/artists/" + userTerm + "/events?app_id=" + bandsKey;
+    console.log(userTerm);
+    
     axios.get(queryURL)
     .then(function (response) {
-        var humanTime = 
-        console.log("See them on " + response.data[0].datetime);
-        console.log(" at "+ response.data[0].venue.name + " in " + response.data[0].venue.city +", "+ response.data[0].venue.region);
+        var humanTime = moment(response.data[0].datetime).format('LL');
+        
+        console.log("See them on " + humanTime + " at "+ response.data[0].venue.name + " in " + response.data[0].venue.city +", "+ response.data[0].venue.region);
+
+        console.log("See them on " + humanTime + " at "+ response.data[1].venue.name + " in " + response.data[1].venue.city +", "+ response.data[1].venue.region);
+
+        for (let i = 1; i < 4; i++) {
+            console.log("Or see them on " + humanTime + " at "+ response.data[i].venue.name + " in " + response.data[i].venue.city +", "+ response.data[i].venue.region);
+        }
     })
     
-}
+};
 
 // spotify search functionality
 // function spotifySearch(){
@@ -56,3 +67,14 @@ function concertSearch() {
 
 
 // movie search functionality
+function movieSearch(){
+    var userTerm = "goodfellas";
+    queryURL = "http://www.omdbapi.com/?t=" + userTerm + "&y=&plot=short&apikey=" + movieKey;
+    console.log(queryURL)
+
+    axios.get(queryURL)
+    .then(function (response) {
+        console.log(response.data.Title);
+        
+    })
+}
