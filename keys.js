@@ -1,6 +1,6 @@
-// don't fuck with this code
+// don't screw with this code
 
-console.log('this is loaded');
+console.log('keys load');
 
 exports.spotify = {
   id: process.env.SPOTIFY_ID,
@@ -9,4 +9,8 @@ exports.spotify = {
 
 exports.bands = {
     id: process.env.BANDS_API_KEY, 
+}
+
+exports.omdb = {
+  id: process.env.OMDB_API_KEY
 }
