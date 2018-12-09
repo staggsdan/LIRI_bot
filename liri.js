@@ -1,14 +1,17 @@
 require("dotenv").config();
 
-var spotify = require('node-spotify-api');
+var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var moment = require("moment")
 
 var keys = require("./keys");
 // vars to hold the API keys (is this redundant with the vars on lines 3 - 5?)
 var bandsKey = process.env.BANDS_API_KEY;
-var songKey = process.env.SPOTIFY_SECRET;
 var movieKey = process.env.OMDB_API_KEY;
+var spotify = new Spotify({
+    id: process.env.SPOTIFY_ID,
+    secret: process.env.SPOTIFY_SECRET
+  });
 
 
 var userCommand = process.argv[2];
@@ -22,6 +25,7 @@ switch (userCommand) {
         break;
     case "spotify-this-song":
         console.log("spotify")
+        songSearch();
         break;
     case "movie-this":
         console.log("movie");
@@ -37,8 +41,6 @@ switch (userCommand) {
 
 // bandsintown search functionality
 // dev note - be sure to change artistName to an argv input later
-
-
 function concertSearch() {
     var userTerm = userTermEntered.replace(/\s/g, "+");
     var queryURL = "https://rest.bandsintown.com/artists/" + userTerm + "/events?app_id=" + bandsKey;
@@ -59,14 +61,23 @@ function concertSearch() {
     
 };
 
-// spotify search functionality
-// function spotifySearch(){
+// spotify search functionality via npmjs.com
+function songSearch(){
+    var userTerm = "";
     
-// }
+    spotify.search({ type: 'track', query: 'All the Small Things', limit: 5 }, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+       
+      console.log(data); 
+      });
+}
 
 
 
 // movie search functionality
+// before submission: make userterm variable, add more return fields. add default return for no entry.
 function movieSearch(){
     var userTerm = "goodfellas";
     queryURL = "http://www.omdbapi.com/?t=" + userTerm + "&y=&plot=short&apikey=" + movieKey;

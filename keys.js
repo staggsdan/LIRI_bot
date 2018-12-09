@@ -1,6 +1,6 @@
 // don't screw with this code
 
-console.log('keys load');
+// console.log('keys load');
 
 exports.spotify = {
   id: process.env.SPOTIFY_ID,
