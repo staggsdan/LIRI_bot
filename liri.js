@@ -43,7 +43,6 @@ function concertSearch() {
 }
 
 // spotify search functionality via npmjs.com
-
 function songSearch(){
     inquirer.prompt([
         {
