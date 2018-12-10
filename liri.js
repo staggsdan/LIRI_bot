@@ -2,7 +2,8 @@ require("dotenv").config();
 
 var Spotify = require('node-spotify-api');
 var axios = require("axios");
-var moment = require("moment")
+var moment = require("moment");
+var inquirer = require("inquirer");
 
 var keys = require("./keys");
 // vars to hold the API keys (is this redundant with the vars on lines 3 - 5?)
@@ -74,8 +75,6 @@ function songSearch(){
       });
 }
 
-
-
 // movie search functionality
 // before submission: make userterm variable, add more return fields. add default return for no entry.
 function movieSearch(){
@@ -89,3 +88,27 @@ function movieSearch(){
         
     })
 }
+
+// ask a TA how to make search response reactive to object position instead of direct quotes. tried a few approaches, couldn't get it.
+function primaryFunction() {
+    inquirer.prompt([
+        {
+            type: "list",
+            message: "What do you want to search for?",
+            choices: ["Check for a concert", "Look up a song", "Look up a movie", "Random function: pending."],
+            name: "searchlist",
+        }
+    ]).then(function(response){
+        if (response.searchlist === "Check for a concert") {
+            console.log("concert search works");
+        } else if (response.searchlist === "Look up a song") {
+            console.log("spotify search works");
+        } else if (response.searchlist === "Look up a movie"){
+            console.log("movie search works")
+        } else if (response.searchlist === "Random function: pending."){
+            console.log("this function is pending");
+            
+        }
+    })
+}
+primaryFunction();
